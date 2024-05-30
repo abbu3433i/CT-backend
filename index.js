@@ -129,21 +129,17 @@
 //    res.send("lolololopo")     //------normal----
 // })
 
-// app.get('/random/:dta',(req,res)=>{
-//    let {dta} = req.params
+// app.get('/random/:data',(req,res)=>{
+//    let {data} = req.params
 //    let arr = ['A','B','C','A','A']; 
-
-//    let ac = arr.filter((value,index)=>{
-
-//           return value === dta
-          
-//        })
-//        console.log(ac);
-
-//        let va = ac.length
-//           console.log(ac);
-
-//    res.render('index',{arr,ac,va})    //------------arr sharing---
+//    let count= 0;
+//    for (let i of arr) {
+//     if (i==data) {
+//       count++;
+//     }
+//    }
+// console.log(count);
+//    res.render('random',{arr,count})    //------------arr sharing---
 // })
 
 
@@ -184,93 +180,136 @@
 
 
 // ======================================CRUD using Restful API{3}======================================================
+// let express = require('express')
+// let app = express()
+
+
+// var methodOverride = require('method-override')    //
+// app.use(methodOverride('_method'))                 //-----both are use for "put" and "patch" method
+
+
+// app.set('view engine','ejs')
+
+// // app.use(express.static('public'))
+
+// app.listen(3000,()=>{
+//    console.log("chalu......");
+// })
+
+// let comments = [                 //---------Api ka data he arr ki form me
+//    {
+//        id:0,
+//        username:"Sam",
+//        comment:"chitkara is a nice university 0"
+//    },
+//    {
+//        id:1,
+//        username:"g2",
+//        comment:"chitkara is a nice university 1"
+//    },
+//    {
+//        id:2,
+//        username:"vohra",
+//        comment:"chitkara is a nice university 2"
+//    }
+//  ]
+
+
+//  app.use(express.urlencoded({extended:true}))  //-------jo bhi data hum form me bhejenge bo exact receive ho jayega server pe
+
+
+//  app.get('/',(req,res)=>{
+//  res.send('start')
+//  })
+ 
+//  app.get('/show',(req,res)=>{
+//  res.render('index',{comments})    //-----arr ka data frontend pe show ho rha he
+//  })
+
+//  app.get('/form',(req,res)=>{
+//  res.render('form')
+//  })
+
+//  //------------------------------form ka data purane arr me add kar do
+//  app.post('/show',(req,res)=>{
+//   console.log(req.body,"hehehe");
+//   let{username,comment} = req.body      
+//   comments.push({username,comment})
+ 
+//   res.redirect('show')
+//  //  res.send('sendddd')
+//  })
+
+
+// //---------------------------------Target element pe click karne pe ek unique id aa rhi he jo ki params me receive ho rhi he.... us id ki madad se datafind kar rhe hen 
+
+//  app.get('/edit/:id',(req,res)=>{
+//   let {id} = req.params
+// //   console.log(id,'helleleoe');
+
+//   let data1 = comments.find((data)=>{return data.id==id})  //data ki id agar destructure bali id se match hui mtlb target element select ho gya he  
+
+//   res.render('edit',{data1})
+
+//  })
+
+
+//  //---------------------------------old Data replace in this section 
+
+//  app.patch('/show/:id',(req,res)=>{
+//   let {id} = req.params         //---:id naam ke variable me receive data req.params se access hoga
+//   console.log(id,'eje');
+//   let{username,comment} = req.body   //--form ka data req.body se access hoga 
+
+//   let data2 = comments.find((data)=>{return data.id==id})  //---id se data find karke uska username or comment replace kar diya 
+//   console.log(data2,'helele');
+
+//   data2.username = username
+//   data2.comment = comment
+//   res.redirect('/show')
+//  })
+
+
+//  app.delete('/show/:id',(req,res)=>{
+//     let {id} = req.params
+//     console.log(id);
+
+//     let newData = comments.filter((data)=>{return data.id != id});
+
+//     comments = newData;
+//     res.redirect('/show')
+
+//  })
+
+
+//===============================CSR vs SSR========================================================
 let express = require('express')
-let app = express()
-
-
-var methodOverride = require('method-override')    //
-app.use(methodOverride('_method'))                 //-----both are use for "put" and "patch" method
-
+let app = express();
 
 app.set('view engine','ejs')
 
-// app.use(express.static('public'))
+app.use('/home',express.static('public')); //------
 
-app.listen(3000,()=>{
-   console.log("chalu......");
+app.use(express.urlencoded({extended:true}));
+
+
+let arr = [1,2,3,4,5,6];
+
+app.get('/todo',(req,res)=>{
+    res.json(arr);
 })
 
-let comments = [                 //---------Api ka data he arr ki form me
-   {
-       id:0,
-       username:"Sam",
-       comment:"chitkara is a nice university 0"
-   },
-   {
-       id:1,
-       username:"g2",
-       comment:"chitkara is a nice university 1"
-   },
-   {
-       id:2,
-       username:"vohra",
-       comment:"chitkara is a nice university 2"
-   }
- ]
+app.post('/todo',(req,res)=>{
+    console.log(req.body,"ggjgjhg");
+    let{data} =req.body;
+    let data1 = parseInt(data);
+
+    arr.push(data1)
+    res.send("llllll")
+
+})
 
 
- app.use(express.urlencoded({extended:true}))  //-------jo bhi data hum form me bhejenge bo exact receive ho jayega server pe
-
-
- app.get('/',(req,res)=>{
- res.send('start')
+app.listen(3000,()=>{
+    console.log("chalu......");
  })
- 
- app.get('/show',(req,res)=>{
- res.render('index',{comments})    //-----arr ka data frontend pe show ho rha he
- })
-
- app.get('/form',(req,res)=>{
- res.render('form')
- })
-
- //------------------------------form ka data purane arr me add kar do
- app.post('/show',(req,res)=>{
-  console.log(req.body,"hehehe");
-  let{username,comment} = req.body      
-  comments.push({username,comment})
- 
-  res.redirect('show')
- //  res.send('sendddd')
- })
-
-
-//---------------------------------Target element pe click karne pe ek unique id aa rhi he jo ki params me receive ho rhi he.... us id ki madad se datafind kar rhe hen 
-
- app.get('/edit/:id',(req,res)=>{
-  let {id} = req.params
-//   console.log(id,'helleleoe');
-
-  let data1 = comments.find((data)=>{return data.id==id})  //data ki id agar destructure bali id se match hui mtlb target element select ho gya he  
-
-  res.render('edit',{data1})
-
- })
-
-
- //---------------------------------old Data replace in this section 
-
- app.patch('/show/:id',(req,res)=>{
-  let {id} = req.params         //---:id naam ke variable me receive data req.params se access hoga
-  console.log(id,'eje');
-  let{username,comment} = req.body   //--form ka data req.body se access hoga 
-
-  let data2 = comments.find((data)=>{return data.id==id})  //---id se data find karke uska username or comment replace kar diya 
-  console.log(data2,'helele');
-
-  data2.username = username
-  data2.comment = comment
-  res.redirect('/show')
- })
-
-
